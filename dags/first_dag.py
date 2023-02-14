@@ -14,7 +14,7 @@ default_args = {
 
 # creating the DAG.
 with DAG(
-    dag_id = "first_dag",
+    dag_id = "first_dag_v5",
     default_args = default_args,
     description = "first dag w/ bash operator",
     start_date = datetime(2022, 2, 1, 2),
@@ -26,5 +26,22 @@ with DAG(
         bash_command = "echo hello world!"
     )
 
+    task2 = BashOperator(
+        task_id = "second_task",
+        bash_command = "echo hello world2!"
+    )
+
+    task3 = BashOperator(
+        task_id = "third_task",
+        bash_command = "echo hello world3!"
+    )
+
     # task instance.
-    task1
+    # task1.set_downstream(task2)
+    # task1.set_downstream(task3)
+
+    # with bit shift operator
+    # task1 >> task2
+    # task1 >> task3
+
+    task1 >> [task2, task3]
